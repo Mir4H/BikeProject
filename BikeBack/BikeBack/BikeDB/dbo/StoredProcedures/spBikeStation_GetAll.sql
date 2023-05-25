@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spBikeStation_GetAll]
 	@SearchTerm VARCHAR(255) = '',
 	@Page INT = 1,                  -- Resulting page for pagination, starting in 1
-    @Limit INT = 100,               -- Result page size
+    @Limit INT = 50 ,               -- Result page size
     @OrderBy NVARCHAR(255) = NULL,  -- OrderBy column
     @OrderByAsc BIT = 1				-- OrderBy direction (ASC/DESC)
 AS

@@ -1,15 +1,15 @@
-﻿CREATE PROCEDURE [dbo].[spBikeStation_GetPopularDeparture]
+﻿CREATE PROCEDURE [dbo].[spBikeStation_GetPopularReturn]
 	@StationID INT = NULL,
     @Month INT = NULL
 AS
 BEGIN
 	SELECT TOP 5
-	  DepartureStationName
+	  ReturnStationName
 	FROM
 	  [dbo].[BikeRides]
-	WHERE [ReturnStationId] = @StationID AND MONTH(DepartureTime) = ISNULL(@Month, MONTH(DepartureTime))
+	WHERE [DepartureStationId] = @StationID AND MONTH(DepartureTime) = ISNULL(@Month, MONTH(DepartureTime))
 	GROUP BY
-	  DepartureStationName
+	  ReturnStationName
 	ORDER BY
-	  COUNT(DepartureStationName) DESC
+	  COUNT(ReturnStationName) DESC
 END
