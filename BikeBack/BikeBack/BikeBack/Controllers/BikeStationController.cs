@@ -15,7 +15,7 @@ namespace BikeBack.Controllers
         }
 
 
-        [HttpGet("GetBikeStations")]
+        [HttpGet]
         public IEnumerable<BikeStation> GetBikeStations(string? SearchTerm = null, int? Page = null, int? Limit = null, string? OrderBy = null, byte? OrderByAsc = null)
         {
             string sql = $"EXEC [dbo].[spBikeStation_GetAll]";
@@ -33,7 +33,7 @@ namespace BikeBack.Controllers
             return bikeStations;
         }
 
-        [HttpGet("GetSingleBikeStation/{Id}")]
+        [HttpGet("{Id}")]
         public SingleBikeStation GetBikeStation(int Id, int? Month = null)
         {
             string sqlValues = $"EXEC [dbo].[spBikeStation_Get] @StationID = {Id}";
@@ -57,7 +57,7 @@ namespace BikeBack.Controllers
             return bikeStation;
         }
 
-        [HttpPost("AddBikeStation")]
+        [HttpPost]
         public IActionResult AddBikeRide(BikeStation bikeStation)
         {
             string sql = $@"EXEC [dbo].[spBikeStation_Post] 

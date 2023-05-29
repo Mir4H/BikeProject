@@ -14,7 +14,7 @@ namespace BikeBack.Controllers
             _dapper = new DataContextDapper(config);
         }
 
-        [HttpGet("GetBikeRides")]
+        [HttpGet]
         public IEnumerable<BikeRide> GetBikerides(int? Page = null, int? Limit = null, string? OrderBy = null, byte? OrderByAsc = null, string? date1 = null, string? date2 = null)
         {
             string sql = $"EXEC [dbo].[spBikeRide_GetAll]";
@@ -36,7 +36,7 @@ namespace BikeBack.Controllers
             return bikeRides;
         }
 
-        [HttpGet("GetSingleBikeRide/{Id}")]
+        [HttpGet("{Id}")]
         public BikeRide GetBikeride(int Id)
         {
             string sql = $"EXEC [dbo].[spBikeRide_Get] @Id={Id}";
