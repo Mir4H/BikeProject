@@ -8,7 +8,8 @@ import {
     TableCell,
     TableHead,
     TableBody,
-    Paper
+    Paper,
+    Box
   } from '@mui/material'
 
 interface BikeRide {
@@ -40,7 +41,8 @@ const BikeRides = () => {
       }, [])
 
     return (
-            <TableContainer component={Paper}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TableContainer sx={{ maxWidth: 'xl' }} component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -71,6 +73,7 @@ const BikeRides = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            </Box>
           );
 }
 
