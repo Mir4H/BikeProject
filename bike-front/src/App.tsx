@@ -1,9 +1,12 @@
-
+import BikeRides from './components/BikeRides'
 
 const App = () => {
 
   return (
-    <div>City Bikes</div>
+    <>
+    <BikeRides/>
+    </>
+
   )
 }
 
