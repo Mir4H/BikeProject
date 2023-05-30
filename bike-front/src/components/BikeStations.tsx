@@ -20,7 +20,7 @@ import {
   Toolbar,
   IconButton,
   Fab,
-  
+  TableSortLabel
 } from '@mui/material'
 import InputBase from '@mui/material/InputBase'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -140,8 +140,13 @@ const BikeStations = () => {
   }
   const { isLoading, data, error } = useSWR<BikeStationData>(
     `?SearchTerm=${debouncedValue}&Page=${page}&OrderBy=${orderBy}&OrderByAsc=${orderByAsc}`,
-    fetcher
+    fetcher, { keepPreviousData: true }
   )
+
+  const handleSorting = (sortby: string) => {
+        setOrderBy(sortby)
+        setOrderByAsc(orderByAsc === 1 ? 0 : 1)
+  }
 
   console.log(data)
 
@@ -187,10 +192,10 @@ const BikeStations = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead id="back-to-top-anchor">
                 <TableRow>
-                  <TableCell>Aseman numero</TableCell>
-                  <TableCell>Nimi</TableCell>
-                  <TableCell>Osoite</TableCell>
-                  <TableCell align="right">Kapasiteetti</TableCell>
+                  <TableCell onClick={() => handleSorting('StationID')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Aseman numero</TableSortLabel></TableCell>
+                  <TableCell onClick={() => handleSorting('FinnishName')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Nimi</TableSortLabel></TableCell>
+                  <TableCell onClick={() => handleSorting('FinnishAddress')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Osoite</TableSortLabel></TableCell>
+                  <TableCell align="right" onClick={() => handleSorting('Capacity')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Kapasiteetti</TableSortLabel></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

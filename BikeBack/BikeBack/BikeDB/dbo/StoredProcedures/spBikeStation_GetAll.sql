@@ -20,11 +20,11 @@ BEGIN
 	IF (@OrderByAsc = 0 AND @OrderBy = 'FinnishAddress')
 		SELECT * FROM #RawResult ORDER BY FinnishAddress DESC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
 	ELSE
-	IF (@OrderByAsc = 1 AND @OrderBy = 'FinnishCity')
-		SELECT * FROM #RawResult ORDER BY FinnishCity ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
+	IF (@OrderByAsc = 1 AND @OrderBy = 'StationID')
+		SELECT * FROM #RawResult ORDER BY StationID ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
 	ELSE
-	IF (@OrderByAsc = 0 AND @OrderBy = 'FinnishCity')
-		SELECT * FROM #RawResult ORDER BY FinnishCity DESC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
+	IF (@OrderByAsc = 0 AND @OrderBy = 'StationID')
+		SELECT * FROM #RawResult ORDER BY StationID DESC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
 	ELSE
 	IF (@OrderByAsc = 1 AND @OrderBy = 'Capacity')
 		SELECT * FROM #RawResult ORDER BY Capacity ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
