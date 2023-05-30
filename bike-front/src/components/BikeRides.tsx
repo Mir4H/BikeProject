@@ -27,7 +27,6 @@ interface BikeRide {
 const BikeRides = () => {
     const [bikeRides, setBikeRides] = useState<BikeRide[]>([])
 
-
     useEffect(() => {
         apiEndpoint(ENDPOINTS.BikeRide)
           .fetch()

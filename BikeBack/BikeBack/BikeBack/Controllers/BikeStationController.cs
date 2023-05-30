@@ -16,21 +16,25 @@ namespace BikeBack.Controllers
 
 
         [HttpGet]
-        public IEnumerable<BikeStation> GetBikeStations(string? SearchTerm = null, int? Page = null, int? Limit = null, string? OrderBy = null, byte? OrderByAsc = null)
+        public BikeStationsResult GetBikeStations(string? SearchTerm = null, int? Page = null, string? OrderBy = null, byte? OrderByAsc = null)
         {
             string sql = $"EXEC [dbo].[spBikeStation_GetAll]";
+            string sqlPages = $"EXEC [dbo].[spBikeStation_GetPages]";
             string parameters = "";
 
             parameters += SearchTerm != null ? $", @SearchTerm = {SearchTerm}" : null;
             parameters += Page != null ? $", @Page = {Page}" : null;
-            parameters += Limit != null ? $", @Limit = {Limit}" : null;
             parameters += OrderBy != null ? $", @OrderBy = {OrderBy}" : null;
             parameters += OrderByAsc != null ? $", @OrderByAsc = {OrderByAsc}" : null;
 
             sql += parameters != "" ? parameters.Substring(1) : null;
+            sqlPages += parameters != "" ? parameters.Substring(1) : null;
 
-            IEnumerable<BikeStation> bikeStations = _dapper.LoadData<BikeStation>(sql);
-            return bikeStations;
+            BikeStationsResult result = new BikeStationsResult();
+            result.BikeStationList = _dapper.LoadData<BikeStation>(sql);
+            int total = _dapper.LoadDataSingle<int>(sqlPages);
+            result.NumberOfPages = (int)Math.Ceiling(total / 50.0);
+            return result;
         }
 
         [HttpGet("{Id}")]

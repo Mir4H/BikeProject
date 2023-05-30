@@ -9,14 +9,15 @@ interface Endpoints {
 
 export const ENDPOINTS: Endpoints = {
   BikeRide: 'bikeRide',
-  BikeStation: 'bikeStation',
+  BikeStation: 'bikeStation'
 }
 
 export const apiEndpoint = (endpoint: string) => {
-  const url: string = `${BASE_URL}/${endpoint}/`
+  const url: string = `${BASE_URL}/${endpoint}`
+  console.log(endpoint)
   return {
     fetch: () => axios.get(url),
-    fetchById: (id: number) => axios.get(url + id),
+    fetchById: (id: number) => axios.get(`${url}/${id}`),
     post: (newRecord: string) => axios.post(url, newRecord),
   }
 }
