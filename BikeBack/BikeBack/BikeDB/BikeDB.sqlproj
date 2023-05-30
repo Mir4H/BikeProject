@@ -71,6 +71,7 @@
     <Build Include="dbo\StoredProcedures\spBikeStation_GetPopularReturn.sql" />
     <Build Include="dbo\StoredProcedures\spBikeStation_Post.sql" />
     <Build Include="dbo\StoredProcedures\spBikeStation_GetPages.sql" />
+    <Build Include="dbo\StoredProcedures\spBikeRide_GetPages.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BikeDB.publish.xml" />

@@ -15,25 +15,29 @@ namespace BikeBack.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<BikeRide> GetBikerides(int? Page = null, int? Limit = null, string? OrderBy = null, byte? OrderByAsc = null, string? date1 = null, string? date2 = null)
+        public BikeRidesResult GetBikerides(int? Page = null, string? OrderBy = null, byte? OrderByAsc = null, string? date1 = null, string? date2 = null)
         {
             string sql = $"EXEC [dbo].[spBikeRide_GetAll]";
+            string sqlPages = $"EXEC [dbo].[spBikeRide_GetPages]";
             string parameters = "";
 
             string? dateOne = date1 != null ? DateTime.Parse(date1).ToString("yyyy-MM-dd HH:mm:ss").Replace(".", ":") : null;
             string? dateTwo = date2 != null ? DateTime.Parse(date2).ToString("yyyy-MM-dd HH:mm:ss").Replace(".", ":") : null;
 
             parameters += Page != null ? $", @Page = {Page}" : null;
-            parameters += Limit != null ? $", @Limit = {Limit}" : null;
             parameters += OrderBy != null ? $", @OrderBy = {OrderBy}" : null;
             parameters += OrderByAsc != null ? $", @OrderByAsc = {OrderByAsc}" : null;
             parameters += date1 != null ? $", @date1 = '{dateOne}'" : null;
             parameters += date2 != null ? $", @date2 = '{dateTwo}'" : null;
 
             sql += parameters != "" ? parameters.Substring(1) : null;
-            Console.WriteLine(sql);
-            IEnumerable<BikeRide> bikeRides = _dapper.LoadData<BikeRide>(sql);
-            return bikeRides;
+            sqlPages += parameters != "" ? parameters.Substring(1) : null;
+
+            BikeRidesResult result = new BikeRidesResult();
+            result.BikeRideList = _dapper.LoadData<BikeRide>(sql);
+            int total = _dapper.LoadDataSingle<int>(sqlPages);
+            result.NumberOfPages = (int)Math.Ceiling(total / 50.0);
+            return result;
         }
 
         [HttpGet("{Id}")]
