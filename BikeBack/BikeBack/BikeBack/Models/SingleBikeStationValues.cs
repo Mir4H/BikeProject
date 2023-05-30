@@ -16,7 +16,9 @@
         public float LocationY { get; set; }
         public int TotalDepartures { get; set; }
         public int TotalReturns { get; set; }
-        public float AvgDistance { get; set; }
-        public float AvgDuration { get; set; }
+        public float AvgDistanceReturn { get; set; }
+        public float AvgDurationReturn { get; set; }
+        public float AvgDistanceDep { get; set; }
+        public float AvgDurationDep { get; set; }
     }
 }

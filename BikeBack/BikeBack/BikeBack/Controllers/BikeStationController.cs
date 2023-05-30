@@ -55,8 +55,8 @@ namespace BikeBack.Controllers
 
             SingleBikeStation bikeStation = new SingleBikeStation();
             bikeStation.BikeStationValues = _dapper.LoadDataSingle<SingleBikeStationValues>(sqlValues);
-            bikeStation.PopularDeparture = _dapper.LoadData<string>(sqlDeparture);
-            bikeStation.PopularReturn = _dapper.LoadData<string>(sqlReturn);
+            bikeStation.PopularDeparture = _dapper.LoadData<Statistics>(sqlDeparture);
+            bikeStation.PopularReturn = _dapper.LoadData<Statistics>(sqlReturn);
 
             return bikeStation;
         }

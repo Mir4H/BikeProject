@@ -1,6 +1,7 @@
 import { apiEndpoint } from '../api'
 import { useState } from 'react'
 import useDebounce from '../hooks/useDebounce'
+import { useNavigate } from "react-router-dom";
 import { ENDPOINTS } from '../api'
 import useSWR from 'swr'
 import {
@@ -135,6 +136,7 @@ const BikeStations = () => {
   const [orderBy, setOrderBy] = useState('')
   const [orderByAsc, setOrderByAsc] = useState(1)
   const debouncedValue = useDebounce<string>(searchTerm, 500)
+  const navigate = useNavigate();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
   }
@@ -204,7 +206,7 @@ const BikeStations = () => {
                     hover
                     key={Number(bikeStation.stationID)}
                     sx={{ cursor: 'pointer', '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={(event) => console.log(bikeStation.stationID)}
+                    onClick={() => navigate(`/stations/${bikeStation.stationID}`)}
                   >
                     <TableCell component="th" scope="row">
                       {bikeStation.stationID.toString()}

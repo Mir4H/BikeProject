@@ -4,12 +4,14 @@
 AS
 BEGIN
 	SELECT TOP 5
-	  DepartureStationName
+	  DepartureStationName as StationName,
+	  DepartureStationId as StationId
 	FROM
 	  [dbo].[BikeRides]
 	WHERE [ReturnStationId] = @StationID AND MONTH(DepartureTime) = ISNULL(@Month, MONTH(DepartureTime))
 	GROUP BY
-	  DepartureStationName
+	  DepartureStationName,
+	  DepartureStationId
 	ORDER BY
 	  COUNT(DepartureStationName) DESC
 END
