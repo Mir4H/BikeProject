@@ -7,7 +7,7 @@
 AS
 BEGIN
     SELECT * INTO #RawResult FROM [dbo].[BikeStations]
-	WHERE FinnishName LIKE @SearchTerm OR FinnishAddress LIKE @SearchTerm
+	WHERE FinnishName LIKE '%'+@SearchTerm+'%' OR FinnishAddress LIKE '%'+@SearchTerm+'%'
 	IF (@OrderByAsc = 1 AND @OrderBy = 'FinnishName')
 		SELECT * FROM #RawResult ORDER BY FinnishName ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
 	ELSE

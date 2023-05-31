@@ -1,7 +1,7 @@
 import { apiEndpoint } from '../api'
 import { useState } from 'react'
-import {secToMin, mToKm} from '../helpers'
-import { useNavigate } from "react-router-dom";
+import { secToMin, mToKm } from '../helpers'
+import { useNavigate } from 'react-router-dom'
 import { ENDPOINTS } from '../api'
 import useSWR from 'swr'
 import {
@@ -75,56 +75,51 @@ const fetcher = (queryParams: string) =>
 const SingleBikeStation = () => {
   const [month, setMonth] = useState<string>('')
   const { id } = useParams()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const { isLoading, data, error } = useSWR<BikeStationValues>(`/${id}?Month=${month}`, fetcher, {
     keepPreviousData: true
   })
 
   const handleFiltering = (event: SelectChangeEvent) => {
-    console.log(event.target.value)
     setMonth(event.target.value)
   }
   if (error) return <h2>{error.message}</h2>
-  if (isLoading) return <CircularProgress sx={{color: '#deced1'}}/>
+  if (isLoading) return <CircularProgress sx={{ color: '#deced1' }} />
   return data ? (
     <Container component={Paper} sx={{ maxWidth: 'xl' }}>
-        <Typography sx={{ mt: 5, mx: 5 }} variant="h3">
-          {data.bikeStationValues.finnishName}
-        </Typography>
+      <Typography sx={{ mt: 5, mx: 5 }} variant="h3">
+        {data.bikeStationValues.finnishName}
+      </Typography>
+      <Typography sx={{ mx: 5 }} variant="h6">
+        {data.bikeStationValues.swedishName}
+      </Typography>
+      {data.bikeStationValues.finnishName === data.bikeStationValues.englishName ? null : (
         <Typography sx={{ mx: 5 }} variant="h6">
-          {data.bikeStationValues.swedishName}
+          {data?.bikeStationValues.englishName}
         </Typography>
-        {data.bikeStationValues.finnishName === data.bikeStationValues.englishName ? null : (
-          <Typography sx={{ mx: 5 }} variant="h6">
-            {data?.bikeStationValues.englishName}
-          </Typography>
-        )}
-        <Box sx={{ mt: 3 }}>
-          <MyMap
-            lon={data.bikeStationValues.locationX}
-            lat={data.bikeStationValues.locationY}
-          ></MyMap>
-        </Box>
-        <Box sx={{ mt: 3, mx: 5 }}>
-          <Typography>
-            {data.bikeStationValues.finnishAddress} {data.bikeStationValues.finnishCity}
-          </Typography>
-          <Typography>
-            {data.bikeStationValues.swedishAddress} {data.bikeStationValues.swedishCity}
-          </Typography>
-        </Box>
+      )}
+      <Box sx={{ mt: 3 }}>
+        <MyMap
+          lon={data.bikeStationValues.locationX}
+          lat={data.bikeStationValues.locationY}
+        ></MyMap>
+      </Box>
+      <Box sx={{ mt: 3, mx: 5 }}>
+        <Typography>
+          {data.bikeStationValues.finnishAddress} {data.bikeStationValues.finnishCity}
+        </Typography>
+        <Typography>
+          {data.bikeStationValues.swedishAddress} {data.bikeStationValues.swedishCity}
+        </Typography>
+      </Box>
 
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-around"
-          alignItems="flex-start"
-        ><Grid item xs={12} sm={6}>
+      <Grid container direction="row" justifyContent="space-around" alignItems="flex-start">
+        <Grid item xs={12} sm={6}>
           <Typography sx={{ mx: 5, my: 2, minWidth: 200 }} variant="h6">
             Aseman statistiikka
           </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
             <InputLabel sx={{ mx: 5, mb: 2 }} id="select-month">
               Kuukausiarvot
@@ -143,38 +138,57 @@ const SingleBikeStation = () => {
               <MenuItem value={''}>Kaikki</MenuItem>
             </Select>
           </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography sx={{ mx: 5 }}>
-              Lähdöt: {data.bikeStationValues.totalDepartures}
-            </Typography>
-            <Typography sx={{ mx: 5, mt: 3 }}>Lähtöjen keskimääräinen matkapituus: {mToKm(data.bikeStationValues.avgDistanceDep)}</Typography>
-            <Typography sx={{ mx: 5, mt: 3 }}>Lähtöjen keskimääräinen matka-aika: {secToMin(data.bikeStationValues.avgDurationDep)}</Typography>
-            <Typography sx={{ mx: 5, my: 3 }}>Popular return stations: </Typography>
-            <Stack direction='column'>
-            {data?.popularReturn.map((station, index) => (
-              <Button color="secondary" onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3' }} key={station.stationId}>{station.stationName}</Button>
-        ))}
-        </Stack>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          
-            <Typography sx={{ mx: 5 }}>
-              Palautukset: {data.bikeStationValues.totalReturns}
-            </Typography>
-            <Typography sx={{ mx: 5, mt: 3 }}>Palautusten keskimääräinen matkapituus: {mToKm(data.bikeStationValues.avgDistanceReturn)}</Typography>
-            <Typography sx={{ mx: 5, mt: 3 }}>Palautusten keskimääräinen matka-aika: {secToMin(data.bikeStationValues.avgDurationReturn)}</Typography>
-            <Typography sx={{ mx: 5, my: 3}}>Popular departure stations: </Typography>
-            <Stack direction='column'>
-            {data?.popularDeparture.map((station, index) => (
-          <Button color="secondary" onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3'}} key={station.stationId}>{station.stationName}</Button>
-        ))}</Stack>
-          </Grid>
         </Grid>
-
-        
-        </Container>
-
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ mx: 5 }}>Lähdöt: {data.bikeStationValues.totalDepartures}</Typography>
+          <Typography sx={{ mx: 5, mt: 3 }}>
+            Lähtöjen keskimääräinen matkapituus: {mToKm(data.bikeStationValues.avgDistanceDep)}
+          </Typography>
+          <Typography sx={{ mx: 5, mt: 3 }}>
+            Lähtöjen keskimääräinen matka-aika: {secToMin(data.bikeStationValues.avgDurationDep)}
+          </Typography>
+          <Typography sx={{ mx: 5, my: 3 }}>Popular return stations: </Typography>
+          <Stack direction="column">
+            {data?.popularReturn.map((station, index) => (
+              <Button
+                color="secondary"
+                onClick={() => navigate(`/stations/${station.stationId}`)}
+                variant="outlined"
+                sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3' }}
+                key={station.stationId}
+              >
+                {station.stationName}
+              </Button>
+            ))}
+          </Stack>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ mx: 5 }}>Palautukset: {data.bikeStationValues.totalReturns}</Typography>
+          <Typography sx={{ mx: 5, mt: 3 }}>
+            Palautusten keskimääräinen matkapituus:{' '}
+            {mToKm(data.bikeStationValues.avgDistanceReturn)}
+          </Typography>
+          <Typography sx={{ mx: 5, mt: 3 }}>
+            Palautusten keskimääräinen matka-aika:{' '}
+            {secToMin(data.bikeStationValues.avgDurationReturn)}
+          </Typography>
+          <Typography sx={{ mx: 5, my: 3 }}>Popular departure stations: </Typography>
+          <Stack direction="column">
+            {data?.popularDeparture.map((station, index) => (
+              <Button
+                color="secondary"
+                onClick={() => navigate(`/stations/${station.stationId}`)}
+                variant="outlined"
+                sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3' }}
+                key={station.stationId}
+              >
+                {station.stationName}
+              </Button>
+            ))}
+          </Stack>
+        </Grid>
+      </Grid>
+    </Container>
   ) : (
     <Typography>No data found</Typography>
   )

@@ -24,20 +24,19 @@ const getFreshContext = () => {
     localStorage.setItem(
       'context',
       JSON.stringify({
-        searchTerm: "",
+        searchTerm: '',
         date1: new Date('2021-05-01T00:00'),
-        date2: new Date('2021-07-31T23:59'),
+        date2: new Date('2021-08-01T00:00'),
         ridesPage: 1,
-        ridesOrderBy: "",
+        ridesOrderBy: '',
         ridesOrderByAsc: 1,
         stationsPage: 1,
-        stationsOrderBy: "",
+        stationsOrderBy: '',
         stationsOrderByAsc: 1
       })
     )
   }
   const getContext: string | null = localStorage.getItem('context')
-  console.log(localStorage.getItem('context'))
   return getContext ? JSON.parse(getContext) : null
 }
 

@@ -95,23 +95,42 @@ const Layout = () => {
     if (context !== undefined) {
       setContext({ ...context, ...{ searchTerm: debouncedValue } })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue])
 
   const handleStartDateChange = (value: any) => {
     if (context !== undefined) {
-      setContext({ ...context, ...{ date1: new Date(value) } })
+      const selectedDate = new Date(value)
+      const minDate = new Date('04/30/2021')
+      const maxDate = new Date(context.date2)
+      if (selectedDate > minDate && selectedDate < maxDate) {
+        setContext({ ...context, ...{ date1: selectedDate } })
+      } else {
+        return
+      }
+    } else {
+      resetContext()
     }
   }
 
   const handleEndDateChange = (value: any) => {
     if (context !== undefined) {
-      setContext({ ...context, ...{ date2: new Date(value) } })
+      const selectedDate = new Date(value)
+      const minDate = new Date(context.date1)
+      const maxDate = new Date('08/19/2021')
+      if (selectedDate > minDate && selectedDate < maxDate) {
+        setContext({ ...context, ...{ date2: selectedDate } })
+      } else {
+        return
+      }
     } else {
       resetContext()
     }
   }
+
   const handleReset = () => {
     resetContext()
+    setSearchTerm("")
   }
 
   if (context === undefined) return <CircularProgress sx={{ color: '#deced1' }} />
@@ -120,6 +139,7 @@ const Layout = () => {
       <AppBar position="sticky" sx={{ maxWidth: 'xl', bgcolor: '#deced1' }}>
         <Toolbar>
           <IconButton
+            id="menu-button"
             size="large"
             edge="start"
             aria-label="open drawer"
@@ -158,8 +178,9 @@ const Layout = () => {
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
+                  id="search"
                   placeholder="Search by station name or address…"
-                  value={context.searchTerm}
+                  value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
                 />
               </Search>
@@ -179,8 +200,8 @@ const Layout = () => {
                 <DesktopDateTimePicker
                   minDate={new Date('2021-05-01')}
                   maxDate={new Date('2021-07-31')}
-                  label="Lähtöaika"
-                  slotProps={{ textField: { size: 'small', color: 'secondary' } }}
+                  label="Matkat alkaen"
+                  slotProps={{ textField: { id: 'startDate', size: 'small', color: 'secondary' } }}
                   defaultValue={new Date(context.date1)}
                   value={new Date(context.date1)}
                   onChange={handleStartDateChange}
@@ -188,8 +209,8 @@ const Layout = () => {
                 <DesktopDateTimePicker
                   minDate={new Date('2021-05-01')}
                   maxDate={new Date('2021-08-18')}
-                  label="Paluuaika"
-                  slotProps={{ textField: { size: 'small', color: 'secondary' } }}
+                  label="Matkat päättyen"
+                  slotProps={{ textField: { id: 'endDate', size: 'small', color: 'secondary' } }}
                   defaultValue={new Date(context.date2)}
                   value={new Date(context.date2)}
                   onChange={handleEndDateChange}

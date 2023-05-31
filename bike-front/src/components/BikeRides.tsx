@@ -1,5 +1,4 @@
 import { apiEndpoint } from '../api'
-import { useState } from 'react'
 import { secToMin, mToKm, dateToString } from '../helpers'
 import { ENDPOINTS } from '../api'
 import useSWR from 'swr'
@@ -63,11 +62,11 @@ const BikeRides = () => {
     }
   }
   const { isLoading, data, error } = useSWR<BikeRideData>(
-    `?Page=${context ? context.ridesPage : ''}
-        &OrderBy=${context ? context.ridesOrderBy : ''}
-        &OrderByAsc=${context ? context.ridesOrderByAsc : ''}
-        &date1=${context ? new Date(context.date1).toISOString() : ''}
-        &date2=${context ? new Date(context.date2).toISOString() : ''}`,
+    `?Page=${context ? context.ridesPage : ''}&OrderBy=${
+      context ? context.ridesOrderBy : ''
+    }&OrderByAsc=${context ? context.ridesOrderByAsc : ''}&date1=${
+      context ? new Date(context.date1).toISOString() : ''
+    }&date2=${context ? new Date(context.date2).toISOString() : ''}`,
     fetcher
   )
 
@@ -81,32 +80,36 @@ const BikeRides = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead id="back-to-top-anchor">
                 <TableRow>
-                  <TableCell onClick={() => handleSorting('DepartureTime')}>
+                  <TableCell id="lahtoaika" onClick={() => handleSorting('DepartureTime')}>
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Lähtöaika
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell onClick={() => handleSorting('ReturnTime')}>
+                  <TableCell id="loppuaika" onClick={() => handleSorting('ReturnTime')}>
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Loppuaika
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell onClick={() => handleSorting('DepartureStationName')}>
+                  <TableCell id="lahtoasema" onClick={() => handleSorting('DepartureStationName')}>
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Lähtöasema
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell onClick={() => handleSorting('ReturnStationName')}>
+                  <TableCell id="loppuasema" onClick={() => handleSorting('ReturnStationName')}>
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Loppuasema
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align="right" onClick={() => handleSorting('CoveredDistance')}>
+                  <TableCell
+                    id="matka"
+                    align="right"
+                    onClick={() => handleSorting('CoveredDistance')}
+                  >
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Matka
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align="right" onClick={() => handleSorting('Duration')}>
+                  <TableCell id="aika" align="right" onClick={() => handleSorting('Duration')}>
                     <TableSortLabel direction={context.ridesOrderByAsc === 1 ? 'asc' : 'desc'}>
                       Aika
                     </TableSortLabel>
@@ -119,14 +122,18 @@ const BikeRides = () => {
                     key={Number(bikeRide.id)}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell id="departureTime" component="th" scope="row">
                       {dateToString(bikeRide.departureTime)}
                     </TableCell>
-                    <TableCell>{dateToString(bikeRide.returnTime)}</TableCell>
-                    <TableCell>{bikeRide.departureStationName}</TableCell>
-                    <TableCell>{bikeRide.returnStationName}</TableCell>
-                    <TableCell align="right">{mToKm(Number(bikeRide.coveredDistance))}</TableCell>
-                    <TableCell align="right">{secToMin(Number(bikeRide.duration))}</TableCell>
+                    <TableCell id="returnTime">{dateToString(bikeRide.returnTime)}</TableCell>
+                    <TableCell id="departureStationName">{bikeRide.departureStationName}</TableCell>
+                    <TableCell id="returnStationName">{bikeRide.returnStationName}</TableCell>
+                    <TableCell id="coveredDistance" align="right">
+                      {mToKm(Number(bikeRide.coveredDistance))}
+                    </TableCell>
+                    <TableCell id="duration" align="right">
+                      {secToMin(Number(bikeRide.duration))}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

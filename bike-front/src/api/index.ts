@@ -3,8 +3,8 @@ import axios from 'axios'
 export const BASE_URL: string = 'https://localhost:5001'
 
 interface Endpoints {
-    BikeRide: string;
-    BikeStation: string;
+  BikeRide: string
+  BikeStation: string
 }
 
 export const ENDPOINTS: Endpoints = {
@@ -14,10 +14,9 @@ export const ENDPOINTS: Endpoints = {
 
 export const apiEndpoint = (endpoint: string) => {
   const url: string = `${BASE_URL}/${endpoint}`
-  console.log(endpoint)
   return {
     fetch: () => axios.get(url),
     fetchById: (id: number) => axios.get(`${url}/${id}`),
-    post: (newRecord: string) => axios.post(url, newRecord),
+    post: (newRecord: string) => axios.post(url, newRecord)
   }
 }
