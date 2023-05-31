@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 import * as React from 'react'
 import { ScrollTop } from './ScrollToTop'
+import useStateContext from '../hooks/useStateContex'
 
 interface BikeStation {
   stationID: Number
@@ -47,27 +48,42 @@ const fetcher = (queryParams: string) =>
     .then((res) => res.data)
 
 const BikeStations = () => {
+  const { context, setContext, resetContext } = useStateContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [page, setPage] = useState(1)
   const [orderBy, setOrderBy] = useState('')
   const [orderByAsc, setOrderByAsc] = useState(1)
   const debouncedValue = useDebounce<string>(searchTerm, 500)
   const navigate = useNavigate();
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    if (context !== undefined) {
+      setContext({ ...context, ...{ stationsPage: value } })
+    } else {
+      resetContext()
+    }
   }
   const { isLoading, data, error } = useSWR<BikeStationData>(
-    `?SearchTerm=${debouncedValue}&Page=${page}&OrderBy=${orderBy}&OrderByAsc=${orderByAsc}`,
+    `?SearchTerm=${context ? context.searchTerm : ''}
+    &Page=${context ? context.stationsPage : ''}
+    &OrderBy=${context ? context.stationsOrderBy : ''}
+    &OrderByAsc=${context ? context.stationsOrderByAsc : ''}`,
     fetcher
   )
 
   const handleSorting = (sortby: string) => {
-        setOrderBy(sortby)
-        setOrderByAsc(orderByAsc === 1 ? 0 : 1)
+    if (context !== undefined) {
+      setContext({
+        ...context,
+        ...{ stationsOrderBy: sortby },
+        ...{ stationsOrderByAsc: context.stationsOrderByAsc === 1 ? 0 : 1 }
+      })
+    } else {
+      resetContext()
+    }
   }
 
   if (error) return <h2>{error.message}</h2>
-  if (isLoading) return <CircularProgress sx={{color: '#deced1'}}/>
+  if (isLoading || context === undefined) return <CircularProgress sx={{color: '#deced1'}}/>
   return (
     <>
       {data && data.bikeStationList.length > 0 ? (
@@ -76,10 +92,10 @@ const BikeStations = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead id="back-to-top-anchor">
                 <TableRow>
-                  <TableCell onClick={() => handleSorting('StationID')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Aseman numero</TableSortLabel></TableCell>
-                  <TableCell onClick={() => handleSorting('FinnishName')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Nimi</TableSortLabel></TableCell>
-                  <TableCell onClick={() => handleSorting('FinnishAddress')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Osoite</TableSortLabel></TableCell>
-                  <TableCell align="right" onClick={() => handleSorting('Capacity')}><TableSortLabel direction={orderByAsc === 1 ? 'asc' : 'desc'}>Kapasiteetti</TableSortLabel></TableCell>
+                  <TableCell onClick={() => handleSorting('StationID')}><TableSortLabel direction={context.stationsOrderByAsc === 1 ? 'asc' : 'desc'}>Aseman numero</TableSortLabel></TableCell>
+                  <TableCell onClick={() => handleSorting('FinnishName')}><TableSortLabel direction={context.stationsOrderByAsc === 1 ? 'asc' : 'desc'}>Nimi</TableSortLabel></TableCell>
+                  <TableCell onClick={() => handleSorting('FinnishAddress')}><TableSortLabel direction={context.stationsOrderByAsc === 1 ? 'asc' : 'desc'}>Osoite</TableSortLabel></TableCell>
+                  <TableCell align="right" onClick={() => handleSorting('Capacity')}><TableSortLabel direction={context.stationsOrderByAsc === 1 ? 'asc' : 'desc'}>Kapasiteetti</TableSortLabel></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -102,7 +118,7 @@ const BikeStations = () => {
 
             </Table>
           </TableContainer>
-          <Pagination count={data.numberOfPages} page={page} onChange={handleChange} />
+          <Pagination count={data.numberOfPages} page={context.stationsPage} onChange={handlePageChange} />
           <ScrollTop />
         </>
       ) : (

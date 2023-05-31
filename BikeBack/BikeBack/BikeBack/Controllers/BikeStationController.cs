@@ -21,10 +21,10 @@ namespace BikeBack.Controllers
             string sql = $"EXEC [dbo].[spBikeStation_GetAll]";
             string sqlPages = $"EXEC [dbo].[spBikeStation_GetPages]";
             string parameters = "";
-
-            parameters += SearchTerm != null ? $", @SearchTerm = {SearchTerm}" : null;
+            
+            parameters += SearchTerm != null ? $", @SearchTerm = '%{SearchTerm}%'" : null;
             parameters += Page != null ? $", @Page = {Page}" : null;
-            parameters += OrderBy != null ? $", @OrderBy = {OrderBy}" : null;
+            parameters += OrderBy != null ? $", @OrderBy = '{OrderBy}'" : null;
             parameters += OrderByAsc != null ? $", @OrderByAsc = {OrderByAsc}" : null;
 
             sql += parameters != "" ? parameters.Substring(1) : null;

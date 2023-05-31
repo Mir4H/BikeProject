@@ -73,5 +73,5 @@ BEGIN
 	ELSE
 		SELECT * FROM [dbo].[BikeRides] 
 		WHERE (DepartureTime BETWEEN @date1 AND @date2) 
-		ORDER BY 1 ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
+		ORDER BY DepartureTime ASC OFFSET @Limit * (@Page - 1) ROWS FETCH NEXT @Limit ROWS ONLY
 END

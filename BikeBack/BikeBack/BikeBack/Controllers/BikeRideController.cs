@@ -25,7 +25,7 @@ namespace BikeBack.Controllers
             string? dateTwo = date2 != null ? DateTime.Parse(date2).ToString("yyyy-MM-dd HH:mm:ss").Replace(".", ":") : null;
 
             parameters += Page != null ? $", @Page = {Page}" : null;
-            parameters += OrderBy != null ? $", @OrderBy = {OrderBy}" : null;
+            parameters += OrderBy != null ? $", @OrderBy = '{OrderBy}'" : null;
             parameters += OrderByAsc != null ? $", @OrderByAsc = {OrderByAsc}" : null;
             parameters += date1 != null ? $", @date1 = '{dateOne}'" : null;
             parameters += date2 != null ? $", @date2 = '{dateTwo}'" : null;

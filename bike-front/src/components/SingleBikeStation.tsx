@@ -153,7 +153,7 @@ const SingleBikeStation = () => {
             <Typography sx={{ mx: 5, my: 3 }}>Popular return stations: </Typography>
             <Stack direction='column'>
             {data?.popularReturn.map((station, index) => (
-              <Button onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350 }} key={station.stationId}>{station.stationName}</Button>
+              <Button color="secondary" onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3' }} key={station.stationId}>{station.stationName}</Button>
         ))}
         </Stack>
           </Grid>
@@ -167,7 +167,7 @@ const SingleBikeStation = () => {
             <Typography sx={{ mx: 5, my: 3}}>Popular departure stations: </Typography>
             <Stack direction='column'>
             {data?.popularDeparture.map((station, index) => (
-          <Button onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350 }} key={station.stationId}>{station.stationName}</Button>
+          <Button color="secondary" onClick={() => navigate(`/stations/${station.stationId}`)} variant="outlined" sx={{ ml: 5, mb: 1, maxWidth: 350, color: '#968185', borderColor: '#b89ea3'}} key={station.stationId}>{station.stationName}</Button>
         ))}</Stack>
           </Grid>
         </Grid>
